@@ -26,6 +26,9 @@
 //-----------------------------------------------------------------------------
 
 #include <SDL3/SDL.h>
+#ifdef OASIS_STAR_API
+#include "odoom64_ogengine_integration.h"
+#endif
 #include <stdlib.h>
 
 #include "d_main.h"
@@ -242,6 +245,9 @@ int D_MiniLoop(void (*start)(void), void (*stop)(void),
 		// get available ticks
 
 		NetUpdate();
+#ifdef OASIS_STAR_API
+		ODoom64_STAR_Tick();
+#endif
 		lowtic = GetLowTic();
 
 		availabletics = lowtic - gametic / ticdup;
@@ -955,5 +961,8 @@ void D_DoomMain(void) {
 		}
 	}
 
+#ifdef OASIS_STAR_API
+	ODoom64_STAR_Init();
+#endif
 	D_DoomLoop();   // never returns
 }

@@ -354,6 +354,21 @@ copy ..\doom64ex-plus.wad $(OutputPath)</Command>
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />
   </ItemGroup>
+  <!-- OASIS STAR API integration (ODoom64). Opt-in: msbuild /p:OasisStarApi=true /p:OgengineDir=<OGEngineClient> -->
+  <ItemGroup Condition="'$(OasisStarApi)'=='true'">
+    <ClCompile Include="..\src\engine\odoom64_ogengine_integration.c" />
+    <ClCompile Include="..\src\engine\oasis\ogengine_sync.c" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(OasisStarApi)'=='true'">
+    <ClCompile>
+      <PreprocessorDefinitions>OASIS_STAR_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src\engine\oasis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OgengineDir)\build\Release;$(OgengineDir)\build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ogengine.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

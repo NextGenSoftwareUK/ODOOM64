@@ -146,6 +146,19 @@ add_executable(
 	${SOURCE_DIR}/i_sectorcombiner.c
 )
 
+# OASIS STAR API integration (ODoom64). Off by default.
+option(OASIS_STAR_API "Enable OASIS STAR API integration" OFF)
+set(OGENGINE_DIR "" CACHE PATH "Path containing ogengine.h / built ogengine library")
+if(OASIS_STAR_API)
+	target_compile_definitions(${PROJECT_NAME} PRIVATE OASIS_STAR_API)
+	target_sources(${PROJECT_NAME} PRIVATE ${SOURCE_DIR}/odoom64_ogengine_integration.c ${SOURCE_DIR}/oasis/ogengine_sync.c)
+	target_include_directories(${PROJECT_NAME} PRIVATE ${SOURCE_DIR}/oasis)
+	if(OGENGINE_DIR)
+		target_link_directories(${PROJECT_NAME} PRIVATE ${OGENGINE_DIR}/build ${OGENGINE_DIR}/build/Release)
+	endif()
+	target_link_libraries(${PROJECT_NAME} ogengine)
+endif()
+
 set_property(TARGET ${PROJECT_NAME} PROPERTY BUILD_RPATH ".")
 
 target_link_libraries(

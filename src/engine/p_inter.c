@@ -23,6 +23,9 @@
 
 // Data.
 #include <stdio.h>
+#ifdef OASIS_STAR_API
+#include "odoom64_ogengine_integration.h"
+#endif
 #include <stdlib.h>
 #include <time.h>
 
@@ -906,6 +909,9 @@ void P_KillMobj(mobj_t* source, mobj_t* target) {
 		// count for intermission
 		if (target->flags & MF_COUNTKILL) {
 			source->player->killcount++;
+#ifdef OASIS_STAR_API
+			ODoom64_STAR_OnKill((int)target->type);
+#endif
 		}
 
 		if (target->player) {
